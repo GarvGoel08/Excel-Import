@@ -1,70 +1,143 @@
-# Getting Started with Create React App
+# Excel Data Importer - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React application for importing and managing Excel data with validation, error handling, and a beautiful user interface.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### File Import
+- Drag-and-drop file upload with fallback button
+- Supports .xlsx files up to 2MB
+- Real-time file validation and feedback
+- Preview imported data before submission
 
-### `yarn start`
+### Data Validation
+- Validates required columns (Name, Amount, Date, Verified)
+- Detailed error reporting for invalid rows
+- Shows validation errors in a modal dialog with sheet-wise tabs
+- Supports partial imports - valid rows can be imported even if some rows have errors
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Data Preview & Management
+- Interactive data table with pagination
+- Format dates in DD-MM-YYYY format
+- Indian number format for amounts (e.g., 12,34,456.00)
+- Row deletion with confirmation dialog
+- Visual status indicators for imported rows
+- Sort and filter capabilities
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Admin View
+- Dedicated `/admin/data` route for viewing all imported data
+- Comprehensive data table with all records
+- Status tracking for imported records
+- Responsive design for all screen sizes
 
-### `yarn test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React 18** - Latest version of React for building user interfaces
+- **React Router v6** - For application routing
+- **Tailwind CSS** - For styling and responsive design
+- **Framer Motion** - For smooth animations and transitions
+- **React Dropzone** - For drag-and-drop file uploads
+- **React Hot Toast** - For notifications
+- **React Icons** - For beautiful icons
 
-### `yarn build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn package manager
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd my-app
+```
 
-### `yarn eject`
+2. Install dependencies:
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Create a .env file in the root directory:
+```env
+REACT_APP_API_BASE_URL=http://localhost:5000/api
+REACT_APP_UPLOAD_ENDPOINT=/validate
+REACT_APP_IMPORT_ENDPOINT=/import
+REACT_APP_DELETE_ROW_ENDPOINT=/delete-row
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Start the development server:
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The application will be available at http://localhost:3000
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Project Structure
 
-## Learn More
+```
+my-app/
+├── public/
+├── src/
+│   ├── components/          # Reusable components
+│   │   ├── DataTable.jsx   # Table component for displaying data
+│   │   ├── ErrorModal.jsx  # Modal for showing validation errors
+│   │   └── FileUpload.jsx  # File upload component
+│   ├── pages/              # Page components
+│   │   ├── ImportPage.jsx  # Main import page
+│   │   └── AdminDataPage.jsx # Admin view for all data
+│   ├── utils/              # Utility functions
+│   │   └── formatters.js   # Date and number formatters
+│   ├── App.js             # Main application component
+│   └── index.js           # Application entry point
+├── .env                   # Environment variables
+└── tailwind.config.js    # Tailwind CSS configuration
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. **Importing Data**:
+   - Navigate to the home page
+   - Drag and drop an Excel file or click to select
+   - Review validation results
+   - Import valid rows
+   - Monitor import status with visual indicators
 
-### Code Splitting
+2. **Viewing Data**:
+   - Click "View Data" in the navigation bar
+   - Browse through imported records
+   - Use pagination controls to navigate
+   - View import status and timestamps
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Error Handling
 
-### Analyzing the Bundle Size
+The application handles various error scenarios:
+- Invalid file types
+- File size limits
+- Missing required columns
+- Invalid data formats
+- Network errors
+- Partial import failures
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Best Practices
 
-### Making a Progressive Web App
+- Proper error boundaries and fallbacks
+- Responsive design principles
+- Accessibility considerations
+- Performance optimizations
+- Clean code architecture
+- Component reusability
+- Proper type checking with PropTypes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing
 
-### Advanced Configuration
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the LICENSE file for details.
