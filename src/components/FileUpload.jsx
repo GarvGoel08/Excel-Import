@@ -2,11 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
 import { FiUploadCloud } from 'react-icons/fi';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const FileUpload = ({ onFileUpload }) => {
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
     
     if (!file) {
@@ -25,7 +27,12 @@ const FileUpload = ({ onFileUpload }) => {
     }
 
     setError('');
-    onFileUpload(file);
+    setIsLoading(true);
+    try {
+      await onFileUpload(file);
+    } finally {
+      setIsLoading(false);
+    }
   }, [onFileUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -34,7 +41,8 @@ const FileUpload = ({ onFileUpload }) => {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
     },
     maxSize: 2 * 1024 * 1024,
-    multiple: false
+    multiple: false,
+    disabled: isLoading
   });
 
   return (
@@ -47,15 +55,25 @@ const FileUpload = ({ onFileUpload }) => {
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'}`}
+          ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'}
+          ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        <input {...getInputProps()} />
-        <FiUploadCloud className="mx-auto text-4xl mb-4 text-blue-500" />
-        <p className="text-lg mb-2">
-          {isDragActive ? 'Drop the file here' : 'Drag & drop an Excel file here'}
-        </p>
-        <p className="text-sm text-gray-500">or click to select a file</p>
-        <p className="text-xs text-gray-400 mt-2">Only .xlsx files up to 2MB are accepted</p>
+        <input {...getInputProps()} disabled={isLoading} />
+        {isLoading ? (
+          <div>
+            <AiOutlineLoading3Quarters className="mx-auto text-4xl mb-4 text-blue-500 animate-spin" />
+            <p className="text-lg mb-2">Processing your file...</p>
+          </div>
+        ) : (
+          <>
+            <FiUploadCloud className="mx-auto text-4xl mb-4 text-blue-500" />
+            <p className="text-lg mb-2">
+              {isDragActive ? 'Drop the file here' : 'Drag & drop an Excel file here'}
+            </p>
+            <p className="text-sm text-gray-500">or click to select a file</p>
+            <p className="text-xs text-gray-400 mt-2">Only .xlsx files up to 2MB are accepted</p>
+          </>
+        )}
       </div>
       {error && (
         <motion.p
